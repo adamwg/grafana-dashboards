@@ -1,0 +1,21 @@
+name: 'Generate Previews for PR'
+on: pull_request
+jobs:
+  generate-previews:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: generate previews
+      id: generate
+      uses: ./github-actions/preview-dashboards
+      with:
+        grafana-url: 'http://promcon-grafana.adamwg.com'
+      env:
+        TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+    - name: post comment
+      uses: rytswd/respost@v0.1.0
+      with:
+        title: 'Generated the following dashboard previews for this PR'
+        body: ${{ steps.generate.outputs.links }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

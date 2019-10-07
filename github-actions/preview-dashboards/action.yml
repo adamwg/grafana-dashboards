@@ -1,0 +1,17 @@
+name: 'Preview Dashboards'
+author: 'Adam Wolfe Gordon <awg@digitalocean.com>'
+description: 'Generates Grafana dashboard previews for a pull request.'
+inputs:
+  grafana-url:
+    description: 'URL of the Grafana server'
+    required: true
+outputs:
+  urls:
+    description: 'URLs of the generated previews, comma-separated'
+  links:
+    description: 'Markdown-formatted links to generated previews'
+runs:
+  using: 'docker'
+  image: Dockerfile
+  args:
+    - ${{ inputs.grafana-url }}
