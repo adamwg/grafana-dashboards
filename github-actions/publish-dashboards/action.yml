@@ -1,0 +1,12 @@
+name: 'Publish Dashboards'
+author: 'Adam Wolfe Gordon <awg@digitalocean.com>'
+description: 'Publishes Grafana dashboards.'
+inputs:
+  grafana-url:
+    description: 'URL of the Grafana server'
+    required: true
+runs:
+  using: 'docker'
+  image: Dockerfile
+  args:
+    - ${{ inputs.grafana-url }}

@@ -1,0 +1,16 @@
+name: 'Publish Dashboards on Merge'
+on:
+  push:
+    branches:
+    - master
+jobs:
+  publish-dashboards:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: publish dashboards
+      uses: ./github-actions/publish-dashboards
+      with:
+        grafana-url: 'http://promcon-grafana.adamwg.com'
+      env:
+        TOKEN: ${{ secrets.GRAFANA_TOKEN }}
