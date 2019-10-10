@@ -31,6 +31,7 @@ done
 function generate_previews() {
     export GRAFANA="${1}"
     export NO_DOCKER='true'
+    export EXPIRY='259200' # 3 days
     for f in "${files[@]}"; do
         folder=$(dirname "$f" | sed 's/^dashboards\///')
         dbname=$(basename "$f" | sed 's/\.jsonnet$//')
