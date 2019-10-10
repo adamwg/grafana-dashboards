@@ -3,11 +3,12 @@
 set -euo pipefail
 SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Read local configuration from config.env in the repository root if it
+# exists. It's handy to set GRAFANA and TOKEN here so you don't have to provide
+# them on every invocation.
+source "${SCRIPTDIR}/../config.env" &> /dev/null || true
+
 function make_preview() {
-    # Read local configuration from config.env in the repository root. It's handy to
-    # set GRAFANA and TOKEN here so you don't have to provide them on every
-    # invocation.
-    source "${SCRIPTDIR}/../config.env"
     # EXPIRY is how many seconds a preview will be available for. Default it to 5
     # minutes; this can be overridden in config.env.
     : "${EXPIRY:=300}"
@@ -37,7 +38,7 @@ function make_preview() {
 
     # Create the snapshot and fix up the URL we get back - when running grafana
     # under Kubernetes it thinks its URL is localhost:3000.
-    url=$("${CURL[@]}" -s -X POST -H 'Content-type: application/json' -H 'Accept: application/json' \
+    url=$("${CURL[@]}" -fs -X POST -H 'Content-type: application/json' -H 'Accept: application/json' \
                        "${GRAFANA}/api/snapshots" --data-binary "@${json}" | \
               jq -r ".url | sub(\"http://localhost:3000\"; \"${GRAFANA}\")")
 

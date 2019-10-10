@@ -6,15 +6,15 @@ set -euo pipefail
 base_branch=$(jq -r '.pull_request.base.ref' "${GITHUB_EVENT_PATH}")
 
 # Determine which dashboards are affected by this change.
-files=$(git log --format='' --name-status "origin/${base_branch}".. -- '**/*.jsonnet' | grep -v '^D' | awk '{print $2}')
-libfiles=$(git log --format='' --name-status "origin/${base_branch}".. -- '**/*.libsonnet' | awk '{print $2}')
+files=($(git log --format='' --name-status "origin/${base_branch}".. -- '**/*.jsonnet' | awk '/^[^D]/ {print $2}'))
+libfiles=($(git log --format='' --name-status "origin/${base_branch}".. -- '**/*.libsonnet' | awk '{print $2}'))
 dependencyFiles=()
 for l in "${libfiles[@]}"; do
-    dependencies=$(grep -R --include='*.jsonnet' -l -F "import '${l}'" . || true)
-    dependencyFiles+=("${dependencies}")
+    dependencies=($(grep -R --include='*.jsonnet' -l -F "import '${l}'" . || true))
+    dependencyFiles+=("${dependencies[@]}")
 done
 for d in "${dependencyFiles[@]}"; do
-    found=''
+    found='false'
     for f in "${files[@]}"; do
         if [[ "${d}" == "./${f}" ]]; then
             found='true'
