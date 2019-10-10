@@ -14,7 +14,7 @@ local row = grafana.row;
         graph.new(
           'Request Rate by Method',
           span=6,
-          format='opm',
+          format='ops',
           fill=0,
           min=0,
           datasource=datasource,
@@ -25,14 +25,14 @@ local row = grafana.row;
         )
         .addTarget(
           prometheus.target(
-            '60 * sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m])) by (grpc_method)' % service,
+            'sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m])) by (grpc_method)' % service,
             legendFormat='{{grpc_method}}',
           )
         ),
         graph.new(
           'Request Rate by Response Code',
           span=6,
-          format='opm',
+          format='ops',
           fill=0,
           min=0,
           datasource=datasource,
@@ -43,7 +43,7 @@ local row = grafana.row;
         )
         .addTarget(
           prometheus.target(
-            '60 * sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m])) by (grpc_code)' % service,
+            'sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m])) by (grpc_code)' % service,
             legendFormat='{{grpc_code}}',
           )
         ),
