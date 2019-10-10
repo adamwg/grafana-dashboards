@@ -6,7 +6,7 @@ GRAFANA="${1}"
 
 function get_folder_id() {
     fname="\"${1}\""
-    existing=$(curl -X GET \
+    existing=$(curl -sf -X GET \
                     -H "Authorization: Bearer ${TOKEN}" \
                     -H 'Content-type: application/json' \
                     -H 'Accept: application/json' \
@@ -17,7 +17,7 @@ function get_folder_id() {
         return 0
     fi
 
-    new=$(curl -X POST \
+    new=$(curl -sf -X POST \
                -H "Authorization: Bearer ${TOKEN}" \
                -H 'Content-type: application/json' \
                -H 'Accept: application/json' \
@@ -45,7 +45,7 @@ for f in dashboards/**/*.jsonnet ; do
         continue
     fi
 
-    if ! curl -f -X POST \
+    if ! curl -sf -X POST \
          -H "Authorization: Bearer ${TOKEN}" \
          -H 'Content-type: application/json' \
          -H 'Accept: application/json' \
