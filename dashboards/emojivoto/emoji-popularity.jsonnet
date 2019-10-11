@@ -22,7 +22,7 @@ local tableStyles = [
     alias: 'Votes',
     pattern: 'Value',
     type: 'number',
-    unit: 'short',
+    unit: 'locale',
     decimals: 0,
   },
 ];
@@ -80,5 +80,20 @@ dashboard.new(
       instant=true,
     )
   ) + tableSort,
-  gridPos={x: 0, y: 1, w: 24, h: 20}
+  gridPos={x: 0, y: 1, w: 12, h: 20}
+)
+.addPanel(
+  table.new(
+    'Top 20 Emojis (all time)',
+    datasource='Prometheus',
+    styles=tableStyles,
+  )
+  .addTarget(
+    prometheus.target(
+      'topk(20, sum(emojivoto_votes_total) by (emoji))',
+      legendFormat='{{emoji}}',
+      instant=true,
+    )
+  ) + tableSort,
+  gridPos={x: 12, y: 1, w: 12, h: 20}
 )
