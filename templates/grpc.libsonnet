@@ -38,7 +38,6 @@ local row = grafana.row;
           datasource=datasource,
           legend_values=true,
           legend_current=true,
-          legend_avg=true,
           legend_hideZero=true,
         )
         .addTarget(
