@@ -70,7 +70,7 @@ else
                  -v "${SCRIPTDIR}/..:/dashboards" \
                  -w /dashboards \
                  -e NO_DOCKER=true \
-                 grafonnet:latest \
+                 adamwg/grafonnet:latest \
                  scripts/preview.sh "${@}")
 fi
 
