@@ -25,22 +25,25 @@ function make_preview() {
         exit 1
     fi
 
+    # Compile first so that we see any jsonnet errors.
+    dbjson=$(mktemp)
+    jsonnet -J /grafonnet-lib -J . "${DASHBOARD}" > "${dbjson}"
+
+    # Generate the snapshot JSON in to a temporary file.
+    json=$(mktemp)
+    jq "{ \"dashboard\": ., \"expires\": ${EXPIRY} }" < "${dbjson}" > "${json}"
+
     # Use token authentication if we have a token.
-    CURL=(curl)
+    CURL=(curl -fsSL)
     if [[ ! -z "${TOKEN:-}" ]]; then
         CURL+=(-H "Authorization: Bearer ${TOKEN}")
     fi
 
-    # Generate the snapshot JSON in to a temporary file.
-    json=$(mktemp)
-    jsonnet -J /grafonnet-lib -J . "${DASHBOARD}" | \
-        jq "{ \"dashboard\": ., \"expires\": ${EXPIRY} }" > "${json}"
-
     # Create the snapshot and fix up the URL we get back - when running grafana
     # under Kubernetes it thinks its URL is localhost:3000.
-    url=$("${CURL[@]}" -fs -X POST -H 'Content-type: application/json' -H 'Accept: application/json' \
-                       "${GRAFANA}/api/snapshots" --data-binary "@${json}" | \
-              jq -r ".url | sub(\"http://localhost:3000\"; \"${GRAFANA}\")")
+    resp=$("${CURL[@]}" -X POST -H 'Content-type: application/json' -H 'Accept: application/json' \
+                        "${GRAFANA}/api/snapshots" --data-binary "@${json}")
+    url=$(echo "${resp}" | jq -r ".url | sub(\"http://localhost:3000\"; \"${GRAFANA}\")")
 
     echo "${url}"
 }
