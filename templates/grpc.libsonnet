@@ -63,11 +63,13 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
             'sum(rate(grpc_server_handled_total{grpc_service="%s",grpc_code!="OK"}[5m])) / sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m]))' % [service, service],
-            legendFormat='{{grpc_code}}',
+            legendFormat='Error Rate',
           )
         ),
         graph.new(
@@ -80,11 +82,14 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_hideZero=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
             'sum(rate(grpc_server_handled_total{grpc_service="%s",grpc_code!="OK"}[5m])) by (grpc_method) / sum(rate(grpc_server_handled_total{grpc_service="%s"}[5m])) by (grpc_method)' % [service, service],
-            legendFormat='{{grpc_code}}',
+            legendFormat='{{grpc_method}}',
           )
         ),
       ]),
