@@ -22,6 +22,8 @@ local row = grafana.row;
           legend_current=true,
           legend_avg=true,
           legend_hideZero=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -40,6 +42,8 @@ local row = grafana.row;
           legend_current=true,
           legend_avg=true,
           legend_hideZero=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -63,6 +67,8 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -81,6 +87,8 @@ local row = grafana.row;
           legend_current=true,
           legend_avg=true,
           legend_hideZero=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -104,6 +112,8 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -121,6 +131,8 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
@@ -138,6 +150,8 @@ local row = grafana.row;
           legend_values=true,
           legend_current=true,
           legend_avg=true,
+          legend_rightSide=true,
+          legend_alignAsTable=true,
         )
         .addTarget(
           prometheus.target(
