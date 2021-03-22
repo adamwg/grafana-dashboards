@@ -9,7 +9,7 @@ jobs:
       id: generate
       uses: ./github-actions/preview-dashboards
       with:
-        grafana-url: 'http://promcon-grafana.adamwg.com'
+        grafana-url: 'http://localhost:3000/'
       env:
         TOKEN: ${{ secrets.GRAFANA_TOKEN }}
     - name: post comment
